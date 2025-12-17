@@ -2707,13 +2707,7 @@
                 justify-content: center;
                 gap: 4px;
                 font-size: 0.7rem;
-            }
-
-            /* CENTER LAST ITEM (Resumen) */
-            .b-nav-item:last-child {
-                grid-column: 1 / -1;
-                background: rgba(30, 41, 59, 0.5);
-                /* Slight highlight */
+                cursor: pointer;
             }
 
             .b-nav-item.active {
@@ -3099,7 +3093,8 @@
 
             <!-- LEFT: Profile & Actions -->
             <div class="header-left" style="display:flex; align-items:center; gap:15px;">
-                <div id="player-profile-display" onclick="UI.switchView('dashboard')"
+                <div id="player-profile-display"
+                    onclick="document.querySelector('.nav-btn[data-view=&quot;dashboard&quot;]').click()"
                     style="display:flex; align-items:center; gap:8px; background:#1e293b; padding:5px 12px; border-radius:20px; border:1px solid #334155; cursor:pointer; transition:background 0.2s;"
                     onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#1e293b'">
                     <span style="font-size:1.2rem;">🏠</span>

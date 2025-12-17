@@ -1447,11 +1447,14 @@
                 width: 90% !important;
 
                 /* Prevent overflow of viewport by capping height */
-                max-height: calc(100vh - 40px) !important;
-                /* 40px accounts for top/bottom margins */
+                max-height: 80vh !important;
+                /* 80% height as requested */
 
                 /* Enable internal scrolling if content is too long */
                 overflow-y: auto !important;
+
+                /* Compact padding */
+                padding: 15px !important;
 
                 /* Ensure flex column if not already */
                 display: flex;
@@ -1478,6 +1481,17 @@
             #company-wizard-modal .modal-content>div:first-child {
                 padding: 10px 12px !important;
                 flex-shrink: 0;
+            }
+
+            /* Intro Banner Optimization */
+            .intro-banner {
+                padding: 12px !important;
+                margin-bottom: 10px !important;
+            }
+
+            .intro-banner p {
+                font-size: 0.8rem !important;
+                line-height: 1.35 !important;
             }
 
             #company-wizard-modal .modal-content>div:first-child h2 {

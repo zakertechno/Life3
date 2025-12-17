@@ -8497,6 +8497,16 @@
             if (!GameState.currentYearIncome) {
                 GameState.currentYearIncome = { salary: 0, rental: 0, stocks: 0, company: 0 };
             }
+
+            // DEFENSIVE INIT FOR LIFETIME STATS (for old save games)
+            if (!GameState.lifetimeStats) {
+                GameState.lifetimeStats = {
+                    totalIncome: { salary: 0, rental: 0, stocks: 0, company: 0 },
+                    totalExpenses: { lifestyle: 0, housing: 0, education: 0 },
+                    totalTaxesPaid: 0
+                };
+            }
+
             if (GameState.salary > 0) {
                 GameState.currentYearIncome.salary += GameState.salary;
                 // LIFETIME TRACKING

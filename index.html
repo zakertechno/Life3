@@ -6802,6 +6802,11 @@
 
                 // RENDER STEP 2: LOCATIONS
                 locGrid.innerHTML = '';
+
+                // Count total businesses (active company + automated companies)
+                const totalBusinesses = (GameState.company ? 1 : 0) + (GameState.ownedCompanies ? GameState.ownedCompanies.length : 0);
+                const premiumLocationsUnlocked = totalBusinesses >= 2;
+
                 for (const [key, val] of Object.entries(CompanyModule.locations)) {
                     const trafficPct = Math.min(100, val.trafficMult * 80); // Visual bar
 
@@ -6816,8 +6821,20 @@
                         priceClass = 'color: #fca5a5; font-weight:bold;'; // Light red for cost
                     }
 
+                    // Check if this location is locked
+                    const isPremiumLocation = (key === 'downtown' || key === 'business_district');
+                    const isLocked = isPremiumLocation && !premiumLocationsUnlocked;
+
                     const card = document.createElement('div');
                     card.className = 'loc-tier-card';
+
+                    // Add locked styling if needed
+                    if (isLocked) {
+                        card.style.opacity = '0.5';
+                        card.style.cursor = 'not-allowed';
+                        card.style.border = '1px solid #475569';
+                    }
+
                     // Re-render when type changes? ideally yes. 
                     // But openCompanyWizard renders once.
                     // We need to re-render locations if we want the price on the card to update?
@@ -6829,9 +6846,13 @@
 
                     card.innerHTML = `
                         <div>
-                            <div style="font-size:1.8rem; margin-bottom:10px;">📍</div>
-                            <div class="biz-title">${val.name}</div>
-                            <div style="font-size:0.8rem; color:#94a3b8; line-height:1.4;">Ideal para negocios que dependen del volumen de gente.</div>
+                            <div style="font-size:1.8rem; margin-bottom:10px;">${isLocked ? '🔒' : '📍'}</div>
+                            <div class="biz-title">${val.name}${isLocked ? ' 🔒' : ''}</div>
+                            <div style="font-size:0.8rem; color:#94a3b8; line-height:1.4;">
+                                ${isLocked ?
+                            '<span style="color:#fbbf24;">Requiere 2+ negocios para desbloquear</span>' :
+                            'Ideal para negocios que dependen del volumen de gente.'}
+                            </div>
                         </div>
                         <div style="margin-top:15px;">
                             <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:#cbd5e1;">
@@ -6845,7 +6866,32 @@
                             </div>
                         </div>
                     `;
+
                     card.onclick = () => {
+                        if (isLocked) {
+                            UI.showModal(
+                                '🔒 Ubicación Premium Bloqueada',
+                                `<div style="text-align:center;">
+                                    <p style="margin-bottom:15px;">Las ubicaciones <strong>${val.name}</strong> están reservadas para empresarios experimentados.</p>
+                                    <div style="background:rgba(251, 191, 36, 0.1); border:1px solid #fbbf24; border-radius:8px; padding:15px; margin:15px 0;">
+                                        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                                            <span>Requisito:</span>
+                                            <strong style="color:#fbbf24;">2+ Negocios</strong>
+                                        </div>
+                                        <div style="display:flex; justify-content:space-between;">
+                                            <span>Negocios Actuales:</span>
+                                            <strong style="color:#f87171;">${totalBusinesses}</strong>
+                                        </div>
+                                    </div>
+                                    <p style="color:#94a3b8; font-size:0.9rem; margin-top:15px;">
+                                        💡 Funda y automatiza tu primera empresa para desbloquear ubicaciones premium.
+                                    </p>
+                                </div>`,
+                                [{ text: 'Entendido', style: 'secondary', fn: null }]
+                            );
+                            return;
+                        }
+
                         locGrid.querySelectorAll('.loc-tier-card').forEach(el => el.classList.remove('selected'));
                         card.classList.add('selected');
                         state.locId = key;
@@ -9349,17 +9395,35 @@
             function promptNewUser(callback) {
                 const msg = `
                     <div style="text-align:center;">
-                        <p>Bienvenido al simulador de inversión definitivo.</p>
-                        <div style="margin:20px 0;">
-                            <label style="display:block; text-align:left; color:#94a3b8; font-size:0.8rem; margin-bottom:5px;">Nombre de Usuario</label>
-                            <input type="text" id="start-player-name" placeholder="Tu Nombre" style="width:100%; padding:12px; background:#1e293b; border:1px solid #475569; color:white; border-radius:6px; font-size:1.1rem;">
+                        <div style="font-size:2.5rem; margin-bottom:8px; line-height:1;">🚀</div>
+                        <h2 style="color:#38bdf8; font-size:1.5rem; margin-bottom:10px; font-weight:700;">¡Bienvenido a tu nueva vida!</h2>
+                        <div style="background:linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(124, 58, 237, 0.1)); border-radius:8px; padding:12px 15px; margin:12px 0; border:1px solid rgba(56, 189, 248, 0.3);">
+                            <p style="font-size:0.95rem; line-height:1.5; color:#e2e8f0; margin-bottom:8px;">
+                                📚 <strong>Estudia</strong> para mejorar tus habilidades
+                            </p>
+                            <p style="font-size:0.95rem; line-height:1.5; color:#e2e8f0; margin-bottom:8px;">
+                                💼 <strong>Trabaja</strong> y asciende en tu carrera
+                            </p>
+                            <p style="font-size:0.95rem; line-height:1.5; color:#e2e8f0; margin-bottom:8px;">
+                                📈 <strong>Invierte</strong> en bolsa e inmuebles
+                            </p>
+                            <p style="font-size:0.95rem; line-height:1.5; color:#e2e8f0; margin-bottom:0;">
+                                🏢 <strong>Crea tu negocio</strong> y llega a la cima
+                            </p>
+                        </div>
+                        <p style="color:#94a3b8; font-size:0.85rem; margin-top:10px; margin-bottom:15px; font-style:italic;">
+                            Compra, vende, alquila... ¡Construye tu futuro! 💰✨
+                        </p>
+                        <div style="margin:0;">
+                            <label style="display:block; text-align:left; color:#94a3b8; font-size:0.75rem; margin-bottom:4px;">Tu Nombre</label>
+                            <input type="text" id="start-player-name" placeholder="¿Cómo te llamas?" style="width:100%; padding:10px; background:#1e293b; border:1px solid #475569; color:white; border-radius:6px; font-size:1rem;">
                         </div>
                     </div>
                  `;
 
                 UI.showModal('Crear Perfil', msg, [
                     {
-                        text: 'Empezar Aventura', style: 'primary', fn: () => {
+                        text: '🎮 Empezar Aventura', style: 'primary', fn: () => {
                             const name = document.getElementById('start-player-name').value || 'Inversor';
                             GameState.playerName = name;
                             callback(); // initGame

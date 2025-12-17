@@ -3099,8 +3099,9 @@
 
             <!-- LEFT: Profile & Actions -->
             <div class="header-left" style="display:flex; align-items:center; gap:15px;">
-                <div id="player-profile-display"
-                    style="display:flex; align-items:center; gap:8px; background:#1e293b; padding:5px 12px; border-radius:20px; border:1px solid #334155;">
+                <div id="player-profile-display" onclick="UI.switchView('dashboard')"
+                    style="display:flex; align-items:center; gap:8px; background:#1e293b; padding:5px 12px; border-radius:20px; border:1px solid #334155; cursor:pointer; transition:background 0.2s;"
+                    onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#1e293b'">
                     <span style="font-size:1.2rem;">👤</span>
                     <span id="header-player-name"
                         style="color:#fcd34d; font-weight:bold; font-size:0.9rem;">Jugador</span>
@@ -3155,10 +3156,6 @@
             <button class="b-nav-item" data-view="market">
                 <span class="icon">📈</span>
                 <span class="label">Bolsa</span>
-            </button>
-            <button class="b-nav-item" data-view="dashboard">
-                <span class="icon">🏠</span>
-                <span class="label">Resumen</span>
             </button>
         </nav>
 

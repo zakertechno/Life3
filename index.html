@@ -3347,6 +3347,103 @@
     <script>
         console.log("CRITICAL DEBUG: SCRIPT STARTED");
         /*******************************************************
+         * ENDGAME SYSTEM (YEAR 10)
+         *******************************************************/
+        function showEndgameModal() {
+            const stats = GameState.lifetimeStats;
+            const totalIncome = stats.totalIncome.salary + stats.totalIncome.rental + stats.totalIncome.stocks + stats.totalIncome.company;
+            const totalExpenses = stats.totalExpenses.lifestyle + stats.totalExpenses.housing + stats.totalExpenses.education;
+
+            const summary = `
+                <div style="text-align: center; padding: 15px; max-height: 75vh; overflow-y: auto;">
+                    <div style="font-size: 2.5rem; margin-bottom: 5px;">☠️</div>
+                    <h2 style="color: #f87171; margin: 0 0 3px 0; font-size: 1.4rem;">Has Muerto - Año 10</h2>
+                    <p style="color: #94a3b8; margin: 0 0 12px 0; font-size: 0.85rem;">
+                        Gracias por jugar, pero seguro que podrías haberlo hecho mejor...
+                    </p>
+                    
+                    <div style="background: rgba(30, 41, 59, 0.5); border: 1px solid #334155; border-radius: 8px; padding: 10px; margin: 8px auto; max-width: 400px;">
+                        <h3 style="color: #4ade80; margin: 0 0 8px 0; font-size: 0.9rem; font-weight: 600;">💰 Ingresos Totales de tu Vida</h3>
+                        <div style="display: flex; justify-content: space-between; margin: 4px 0; font-size: 0.8rem;">
+                            <span>💼 Salarios:</span>
+                            <strong style="color: #4ade80;">${formatCurrency(stats.totalIncome.salary)}</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin: 4px 0; font-size: 0.8rem;">
+                            <span>🏠 Alquileres:</span>
+                            <strong style="color: #4ade80;">${formatCurrency(stats.totalIncome.rental)}</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin: 4px 0; font-size: 0.8rem;">
+                            <span>📈 Bolsa:</span>
+                            <strong style="color: #4ade80;">${formatCurrency(stats.totalIncome.stocks)}</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin: 4px 0; font-size: 0.8rem;">
+                            <span>🏢 Empresas:</span>
+                            <strong style="color: #4ade80;">${formatCurrency(stats.totalIncome.company)}</strong>
+                        </div>
+                        <div style="height: 1px; background: #334155; margin: 6px 0;"></div>
+                        <div style="display: flex; justify-content: space-between; margin: 4px 0; font-size: 0.9rem; font-weight: 600;">
+                            <span>Total Ingresos:</span>
+                            <strong style="color: #4ade80;">${formatCurrency(totalIncome)}</strong>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(30, 41, 59, 0.5); border: 1px solid #334155; border-radius: 8px; padding: 10px; margin: 8px auto; max-width: 400px;">
+                        <h3 style="color: #f87171; margin: 0 0 8px 0; font-size: 0.9rem; font-weight: 600;">💸 Gastos Totales de tu Vida</h3>
+                        <div style="display: flex; justify-content: space-between; margin: 4px 0; font-size: 0.8rem;">
+                            <span>🛍️ Estilo de Vida:</span>
+                            <strong style="color: #f87171;">${formatCurrency(stats.totalExpenses.lifestyle)}</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin: 4px 0; font-size: 0.8rem;">
+                            <span>🏠 Vivienda:</span>
+                            <strong style="color: #f87171;">${formatCurrency(stats.totalExpenses.housing)}</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin: 4px 0; font-size: 0.8rem;">
+                            <span>🎓 Formación:</span>
+                            <strong style="color: #f87171;">${formatCurrency(stats.totalExpenses.education)}</strong>
+                        </div>
+                        <div style="height: 1px; background: #334155; margin: 6px 0;"></div>
+                        <div style="display: flex; justify-content: space-between; margin: 4px 0; font-size: 0.9rem; font-weight: 600;">
+                            <span>Total Gastos:</span>
+                            <strong style="color: #f87171;">${formatCurrency(totalExpenses)}</strong>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(30, 41, 59, 0.5); border: 1px solid #334155; border-radius: 8px; padding: 10px; margin: 8px auto; max-width: 400px;">
+                        <h3 style="color: #fbbf24; margin: 0 0 8px 0; font-size: 0.9rem; font-weight: 600;">📋 Impuestos Pagados</h3>
+                        <div style="display: flex; justify-content: space-between; margin: 4px 0; font-size: 0.9rem; font-weight: 600;">
+                            <span>Total Pagado al Estado:</span>
+                            <strong style="color: #fbbf24;">${formatCurrency(stats.totalTaxesPaid)}</strong>
+                        </div>
+                    </div>
+                    
+                    <p style="color: #38bdf8; margin: 12px 0 0 0; font-size: 0.9rem;">
+                        ¿Por qué no lo intentas de nuevo tomando otras decisiones?
+                    </p>
+                </div>
+            `;
+
+            UI.showModal(
+                '🎮 Fin del Juego',
+                summary,
+                [{ text: '🔄 Reiniciar Juego', style: 'primary', fn: resetGame }]
+            );
+        }
+
+        function resetGame() {
+            // Confirm reset
+            if (!confirm('¿Estás seguro de que quieres reiniciar el juego? Se perderán todos los datos.')) {
+                return;
+            }
+
+            // Clear localStorage
+            localStorage.removeItem('gameState');
+            localStorage.removeItem('playerName');
+
+            // Reload page to restart
+            location.reload();
+        }
+
+        /*******************************************************
          * STATE
          *******************************************************/
         var GameState = {
@@ -3412,6 +3509,13 @@
             expropriation500kDone: false,
             expropriation1MDone: false,
             expropriation3MDone: false,
+
+            // LIFETIME STATISTICS (for endgame summary)
+            lifetimeStats: {
+                totalIncome: { salary: 0, rental: 0, stocks: 0, company: 0 },
+                totalExpenses: { lifestyle: 0, housing: 0, education: 0 },
+                totalTaxesPaid: 0
+            },
 
             // Job Persistence
             currentCareerPath: 'none',
@@ -3856,6 +3960,8 @@
                             GameState.currentYearIncome = { salary: 0, rental: 0, stocks: 0, company: 0 };
                         }
                         GameState.currentYearIncome.stocks += netProfit;
+                        // LIFETIME TRACKING
+                        GameState.lifetimeStats.totalIncome.stocks += netProfit;
                     }
 
                     existing.quantity -= quantity;
@@ -4619,6 +4725,8 @@
                                 GameState.currentYearIncome = { salary: 0, rental: 0, stocks: 0, company: 0 };
                             }
                             GameState.currentYearIncome.company += co.profitLastMonth;
+                            // LIFETIME TRACKING
+                            GameState.lifetimeStats.totalIncome.company += co.profitLastMonth;
                         }
                     });
                 }
@@ -8389,10 +8497,22 @@
             if (!GameState.currentYearIncome) {
                 GameState.currentYearIncome = { salary: 0, rental: 0, stocks: 0, company: 0 };
             }
-            if (GameState.salary > 0) GameState.currentYearIncome.salary += GameState.salary;
-            if (rentIncome > 0) GameState.currentYearIncome.rental += rentIncome;
+            if (GameState.salary > 0) {
+                GameState.currentYearIncome.salary += GameState.salary;
+                // LIFETIME TRACKING
+                GameState.lifetimeStats.totalIncome.salary += GameState.salary;
+            }
+            if (rentIncome > 0) {
+                GameState.currentYearIncome.rental += rentIncome;
+                // LIFETIME TRACKING
+                GameState.lifetimeStats.totalIncome.rental += rentIncome;
+            }
+            // LIFETIME EXPENSE TRACKING
+            if (GameState.expenses > 0) {
+                GameState.lifetimeStats.totalExpenses.lifestyle += GameState.expenses;
+            }
             // Stock gains are tracked when selling
-            // Company profits are tracked in CompanyModule.nextTurn
+            // Company profits are tracked in Company Module.nextTurn
 
             // PROGRESSIVE COMMUNIST EXPROPRIATION SYSTEM
             let expropriationTriggered = false;
@@ -8488,6 +8608,8 @@
 
                 if (totalIncome > 0) {
                     GameState.cash -= taxAmount;
+                    // LIFETIME TAX TRACKING
+                    GameState.lifetimeStats.totalTaxesPaid += taxAmount;
 
                     setTimeout(() => {
                         const breakdown = `
@@ -8518,6 +8640,12 @@
                 GameState.month = 1;
                 GameState.year++;
                 GameState.age++; // Birthday!
+
+                // CHECK FOR YEAR 10 ENDGAME
+                if (GameState.year > 10) {
+                    setTimeout(() => showEndgameModal(), 500);
+                    return; // Stop game progression
+                }
 
                 // ASSIGN NEW ANNUAL STOCK TARGETS
                 StockMarket.assignAnnualTargets();

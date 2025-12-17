@@ -1485,8 +1485,8 @@
 
             /* Intro Banner Optimization */
             .intro-banner {
-                padding: 12px !important;
-                margin-bottom: 10px !important;
+                padding: 8px !important;
+                margin-bottom: 5px !important;
             }
 
             .intro-banner p {
@@ -3667,7 +3667,7 @@
             cash: 500,
             netWorth: 500,
             salary: 0,
-            expenses: 50,
+            expenses: 0,
             lifestyle: {
                 housing: 'parents', // 0
                 food: 'scraps', // 0 (Mama)
@@ -9475,30 +9475,43 @@
                             🏢 <strong>Crea tu negocio</strong> y llega a la cima
                         </p>
                     </div>
-                    <div style="margin:10px 0;">
-                        <label style="display:block; color:#94a3b8; font-size:0.85rem; margin-bottom:5px;">Tu Nombre</label>
+                    <div style="margin:5px 0 15px 0;">
+                        <label style="display:block; color:#94a3b8; font-size:0.85rem; margin-bottom:3px;">Tu Nombre</label>
                         <input type="text" id="start-player-name" placeholder="¿Cómo te llamas?" style="width:100%; padding:10px; background:#1e293b; border:1px solid #475569; color:white; border-radius:6px; font-size:1rem;">
                     </div>
-                    <p style="color:#fbbf24; font-size:0.9rem; font-style:italic; text-align:center; margin:10px 0 5px 0;">
+                    <button id="btn-start-game-custom" class="btn-primary" style="width:100%; padding:12px; font-size:1rem; border-radius:8px; border:none; cursor:pointer; margin-bottom:10px;">🎮 Empezar Aventura</button>
+                    <p style="color:#fbbf24; font-size:0.85rem; font-style:italic; text-align:center; margin:0;">
                         💰 Compra, vende, alquila... ¡Construye tu futuro!
                     </p>
                 `;
 
-                UI.showModal('Crear Perfil', msg, [
-                    {
-                        text: '🎮 Empezar Aventura', style: 'primary', fn: () => {
-                            const name = document.getElementById('start-player-name').value || 'Inversor';
-                            GameState.playerName = name;
-                            callback(); // initGame
-                            setTimeout(() => UI.startInitialTutorial(), 500); // Start New Tutorial
-                        }
-                    }
-                ]);
+                UI.showModal('Crear Perfil', msg, [], true);
+
+                // Quick fix: Remove the default footer if it exists
+                const overlay = document.querySelector('.custom-modal-overlay');
+                if (overlay) {
+                    const footer = overlay.querySelector('.custom-modal-footer, .modal-actions');
+                    if (footer) footer.style.display = 'none';
+                }
+
+                // Attach handler manually since we moved button to body
+                document.getElementById('btn-start-game-custom').onclick = () => {
+                    const name = document.getElementById('start-player-name').value || 'Inversor';
+                    GameState.playerName = name;
+
+                    // Close modal manually (since we bypass default actions)
+                    const overlay = document.querySelector('.custom-modal-overlay');
+                    if (overlay) overlay.remove();
+
+                    callback();
+                    setTimeout(() => UI.startInitialTutorial(), 500);
+                };
             }
 
         } catch (e) {
-            alert('CRITICAL ERROR STARTING GAME: ' + e.message + '\n' + e.stack);
-            console.error(e);
+            console.error('Critical Error loading save, resetting:', e);
+            // Instead of alerting, just start fresh
+            promptNewUser(initGame);
         }
 
     </script>

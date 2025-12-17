@@ -1439,6 +1439,26 @@
 
             /* Wizard Responsive - SIMPLIFIED FOR BUTTON VISIBILITY */
 
+            .modal-content {
+                /* Enforce margins */
+                margin: 20px auto !important;
+                width: 90% !important;
+
+                /* Prevent overflow of viewport by capping height */
+                max-height: calc(100vh - 40px) !important;
+                /* 40px accounts for top/bottom margins */
+
+                /* Enable internal scrolling if content is too long */
+                overflow-y: auto !important;
+
+                /* Ensure flex column if not already */
+                display: flex;
+                flex-direction: column;
+
+                /* Reset fullscreen overrides if any */
+                border-radius: 12px !important;
+            }
+
             /* Full-screen modal on mobile */
             #company-wizard-modal .modal-content {
                 display: flex !important;
@@ -2356,6 +2376,38 @@
             padding: 30px;
             border-radius: 16px;
             margin-top: 40px;
+        }
+
+        .create-company-card {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid #d97706;
+            text-align: center;
+            padding: 30px;
+            border-radius: 16px;
+            margin-top: 40px;
+        }
+
+        /* NEW INTRO BANNER STYLE */
+        .intro-banner {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid #38bdf8;
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.1);
+        }
+
+        .intro-banner::before {
+            content: '🎓';
+            position: absolute;
+            right: -15px;
+            top: -15px;
+            font-size: 8rem;
+            opacity: 0.05;
+            transform: rotate(15deg);
+            pointer-events: none;
         }
 
         /* --- GLOBAL DASHBOARD REDESIGN STYLES --- */
@@ -9399,8 +9451,8 @@
                         <div style="font-size:2rem; margin-bottom:5px;">🚀</div>
                         <h3 style="color:#38bdf8; margin:0 0 10px 0; font-size:1.3rem;">¡Bienvenido a tu nueva vida!</h3>
                     </div>
-                    <div style="background:linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(124, 58, 237, 0.08)); border-radius:8px; padding:12px; margin:0 0 10px 0; border-left:3px solid #38bdf8;">
-                        <p style="color:#e2e8f0; font-size:0.95rem; line-height:1.6; margin:0;">
+                    <div class="intro-banner">
+                        <p style="color:#e2e8f0; font-size:0.95rem; line-height:1.6; margin:0; position:relative; z-index:1;">
                             📚 <strong>Estudia</strong> para mejorar tus habilidades<br>
                             💼 <strong>Trabaja</strong> y asciende en tu carrera<br>
                             📈 <strong>Invierte</strong> en bolsa e inmuebles<br>

@@ -581,6 +581,94 @@
             color: white;
         }
 
+        /* Toast Notification Styles */
+        #toast-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+        }
+
+        .toast-card {
+            background-color: var(--card-bg);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 15px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            animation: slideInRight 0.3s ease-out forwards;
+            min-width: 280px;
+        }
+
+        .toast-card strong {
+            display: block;
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .toast-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .toast-card.info {
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .toast-card.success {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .toast-card.warning {
+            border-left: 4px solid #fbbf24;
+        }
+
+        .toast-card.error {
+            border-left: 4px solid var(--danger-color);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+
+        /* Mobile responsive toast */
+        @media (max-width: 768px) {
+            #toast-container {
+                top: 60px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+
+            .toast-card {
+                min-width: auto;
+            }
+        }
 
 
         /* WIZARD REDESIGN (MARKETING EXPERT) */
@@ -1328,6 +1416,15 @@
         .tab-btn.active {
             color: var(--accent-color);
             background: rgba(56, 189, 248, 0.1);
+        }
+
+        /* Desktop: Show text, hide icons */
+        .tab-btn .mobile-text {
+            display: none;
+        }
+
+        .tab-btn .desktop-text {
+            display: inline;
         }
 
         .job-listings {
@@ -2852,11 +2949,24 @@
             .company-tabs {
                 padding-bottom: 5px;
                 justify-content: space-between;
+                overflow-x: visible;
+                gap: 3px;
             }
 
             .tab-btn {
-                padding: 8px 10px;
-                font-size: 0.9rem;
+                padding: 6px 6px;
+                font-size: 0.75rem;
+                flex: 1;
+                min-width: 0;
+            }
+
+            /* Show icons on mobile, hide text */
+            .tab-btn .mobile-text {
+                display: inline;
+            }
+
+            .tab-btn .desktop-text {
+                display: none;
             }
 
             /* Strategy / Product / Marketing Cards */
@@ -3347,7 +3457,7 @@
     <script>
         console.log("CRITICAL DEBUG: SCRIPT STARTED");
         /*******************************************************
-         * ENDGAME SYSTEM (YEAR 10)
+         * ENDGAME SYSTEM (YEAR 50)
          *******************************************************/
         function showEndgameModal() {
             const stats = GameState.lifetimeStats;
@@ -3363,7 +3473,7 @@
             const summary = `
                 <div style="text-align: center; padding: 15px; max-height: 75vh; overflow-y: auto;">
                     <div style="font-size: 2.5rem; margin-bottom: 5px;">☠️</div>
-                    <h2 style="color: #f87171; margin: 0 0 3px 0; font-size: 1.4rem;">Has Muerto - Año 10</h2>
+                    <h2 style="color: #f87171; margin: 0 0 3px 0; font-size: 1.4rem;">Has Muerto - Año 50</h2>
                     <p style="color: #4ade80; margin: 5px 0; font-size: 1rem; font-weight: 600;">
                         Has llegado a tener un patrimonio de ${formatCurrency(GameState.netWorth)}
                     </p>
@@ -3408,7 +3518,10 @@
                             <div style="height: 1px; background: rgba(56, 189, 248, 0.3); margin: 4px 0;"></div>
                             <div style="display: flex; justify-content: space-between; margin: 2px 0; font-size: 0.8rem; font-weight: 600;">
                                 <span style="color: #38bdf8;">Beneficio Neto:</span>
-                                <strong style="color: ${realEstateProfit >= 0 ? '#4ade80' : '#f87171'};">${formatCurrency(realEstateProfit)}</strong>
+                                <strong style="color: ${realEstateProfit >= 0 ? '#4ade80' : '#f87171'};">
+                                    ${formatCurrency(realEstateProfit)} 
+                                    ${stats.realEstate.totalPurchases > 0 ? `(${((realEstateProfit / stats.realEstate.totalPurchases) * 100).toFixed(1)}%)` : ''}
+                                </strong>
                             </div>
                         </div>
                         ` : ''}
@@ -4534,8 +4647,8 @@
         };
         var EducationModule = {
             courses: [
-                { id: 'bachillerato', name: 'Bachillerato', cost: 0, duration: 24, salaryMod: 1.0, required: null, desc: 'Formación académica base. Necesaria para la Universidad.' },
-                { id: 'fp_medio', name: 'FP Grado Medio', cost: 0, duration: 24, salaryMod: 1.2, required: null, desc: 'Formación práctica básica. Acceso a FP Superior.' },
+                { id: 'bachillerato', name: 'Bachillerato', cost: 0, duration: 18, salaryMod: 1.0, required: null, desc: 'Formación académica base. Necesaria para la Universidad.' },
+                { id: 'fp_medio', name: 'FP Grado Medio', cost: 500, duration: 18, salaryMod: 1.2, required: null, desc: 'Formación Profesional práctica. Acceso a FP Superior.' },
 
                 // FP Superior
                 { id: 'fp_admin', name: 'FP Sup. Administración', cost: 1500, duration: 24, salaryMod: 1.5, required: ['bachillerato', 'fp_medio'], desc: 'Gestión y Finanzas.' },
@@ -4632,7 +4745,7 @@
         var CompanyModule = {
             // Configuration
             businessTypes: {
-                'cafe': { name: 'Cafetería', cost: 20000, baseDemand: 800, baseTicket: 5, cogsPct: 0.25, productivityPerStaff: 800, volatility: 0.05, tier: 1, baseWage: 1200, icon: '☕', baseRent: 1500 },
+                'cafe': { name: 'Cafetería', cost: 15000, baseDemand: 800, baseTicket: 5, cogsPct: 0.25, productivityPerStaff: 800, volatility: 0.05, tier: 1, baseWage: 1200, icon: '☕', baseRent: 1500 },
                 'retail_clothing': { name: 'Tienda de Ropa', cost: 50000, baseDemand: 100, baseTicket: 55, cogsPct: 0.4, productivityPerStaff: 120, volatility: 0.2, tier: 1, baseWage: 1200, icon: '👗', baseRent: 2500 },
                 'marketing_agency': { name: 'Agencia Marketing', cost: 250000, baseDemand: 8, baseTicket: 2000, cogsPct: 0.1, productivityPerStaff: 4, volatility: 0.3, tier: 1, baseWage: 2800, icon: '📈', baseRent: 4000 },
                 'tech_startup': { name: 'Startup SaaS', cost: 750000, baseDemand: 100, baseTicket: 100, cogsPct: 0.05, productivityPerStaff: 200, volatility: 0.6, tier: 2, baseWage: 3000, icon: '💻', baseRent: 2000 }
@@ -5183,19 +5296,19 @@
 
         // --- GIGS POOL ---
         var GIGS_POOL = [
-            { title: 'Vender cromos', salary: 50, duration: 1, type: 'gig', desc: 'Pequeño trapicheo escolar.', reqMonths: 0, reqEdu: null },
-            { title: 'Ventas en Wallapop', salary: 120, duration: 2, type: 'gig', desc: 'Limpiando el trastero.', reqMonths: 0, reqEdu: null },
-            { title: 'Limpiar casas', salary: 200, duration: 3, type: 'gig', desc: 'Trabajo doméstico puntual.', reqMonths: 0, reqEdu: null },
-            { title: 'Pasear perros', salary: 150, duration: 2, type: 'gig', desc: 'Sacar a Rufo y sus amigos.', reqMonths: 0, reqEdu: null },
-            { title: 'Repartir publicidad', salary: 80, duration: 1, type: 'gig', desc: 'Buzoneo por el barrio.', reqMonths: 0, reqEdu: null },
-            { title: 'Cuidar niños', salary: 180, duration: 3, type: 'gig', desc: 'Babysitter de fin de semana.', reqMonths: 0, reqEdu: null },
-            { title: 'Ayudante mudanzas', salary: 220, duration: 1, type: 'gig', desc: 'Cargar cajas pesadas.', reqMonths: 0, reqEdu: null },
-            { title: 'Cliente misterioso', salary: 100, duration: 2, type: 'gig', desc: 'Evaluar tiendas locales.', reqMonths: 0, reqEdu: null },
-            { title: 'Transcribir audios', salary: 130, duration: 2, type: 'gig', desc: 'Trabajo freelance online.', reqMonths: 0, reqEdu: null },
-            { title: 'Encuestador', salary: 90, duration: 1, type: 'gig', desc: 'Hacer preguntas por la calle.', reqMonths: 0, reqEdu: null },
-            { title: 'DJ fiestas infantiles', salary: 160, duration: 1, type: 'gig', desc: 'Música y globoflexia.', reqMonths: 0, reqEdu: null },
-            { title: 'Monitor comedor', salary: 210, duration: 3, type: 'gig', desc: 'Vigilar el patio del cole.', reqMonths: 0, reqEdu: null },
-            { title: 'Cortar césped', salary: 140, duration: 2, type: 'gig', desc: 'Jardinería básica vecinal.', reqMonths: 0, reqEdu: null }
+            { title: 'Vender cromos', salary: 50, duration: 3, type: 'gig', desc: 'Pequeño trapicheo escolar.', reqMonths: 0, reqEdu: null },
+            { title: 'Ventas en Wallapop', salary: 120, duration: 4, type: 'gig', desc: 'Limpiando el trastero.', reqMonths: 0, reqEdu: null },
+            { title: 'Limpiar casas', salary: 200, duration: 5, type: 'gig', desc: 'Trabajo doméstico puntual.', reqMonths: 0, reqEdu: null },
+            { title: 'Pasear perros', salary: 150, duration: 3, type: 'gig', desc: 'Sacar a Rufo y sus amigos.', reqMonths: 0, reqEdu: null },
+            { title: 'Repartir publicidad', salary: 80, duration: 2, type: 'gig', desc: 'Buzoneo por el barrio.', reqMonths: 0, reqEdu: null },
+            { title: 'Cuidar niños', salary: 180, duration: 4, type: 'gig', desc: 'Babysitter de fin de semana.', reqMonths: 0, reqEdu: null },
+            { title: 'Ayudante mudanzas', salary: 220, duration: 2, type: 'gig', desc: 'Cargar cajas pesadas.', reqMonths: 0, reqEdu: null },
+            { title: 'Cliente misterioso', salary: 100, duration: 3, type: 'gig', desc: 'Evaluar tiendas locales.', reqMonths: 0, reqEdu: null },
+            { title: 'Transcribir audios', salary: 130, duration: 4, type: 'gig', desc: 'Trabajo freelance online.', reqMonths: 0, reqEdu: null },
+            { title: 'Encuestador', salary: 90, duration: 2, type: 'gig', desc: 'Hacer preguntas por la calle.', reqMonths: 0, reqEdu: null },
+            { title: 'DJ fiestas infantiles', salary: 160, duration: 3, type: 'gig', desc: 'Música y globoflexia.', reqMonths: 0, reqEdu: null },
+            { title: 'Monitor comedor', salary: 210, duration: 5, type: 'gig', desc: 'Vigilar el patio del cole.', reqMonths: 0, reqEdu: null },
+            { title: 'Cortar césped', salary: 140, duration: 4, type: 'gig', desc: 'Jardinería básica vecinal.', reqMonths: 0, reqEdu: null }
         ];
 
         var JobSystem = {
@@ -5353,7 +5466,12 @@
                     }
                     if (GameState.gigRemaining <= 0) {
                         // Gig finished
-                        UI.showToast('Trabajo Finalizado', 'Tu trabajo temporal ha terminado.', 'info');
+                        // Gig finished - Show modal instead of toast for better visibility
+                        UI.showModal(
+                            '⏰ Trabajo Finalizado',
+                            'Tu trabajo temporal ha terminado. Ahora estás desempleado.<br><br>Busca un nuevo trabajo en la pestaña <strong>Trabajo</strong>.',
+                            [{ text: 'Entendido', style: 'primary', fn: () => UI.updateJob(this) }]
+                        );
                         GameState.jobTitle = 'Desempleado';
                         GameState.salary = 0;
                         GameState.jobType = 'unemployed';
@@ -5920,6 +6038,9 @@
                             const pl = val - (p.quantity * p.avgPrice);
                             const plColor = pl >= 0 ? '#4ade80' : '#f87171';
                             const plSign = pl >= 0 ? '+' : '';
+                            // Calculate percentage
+                            const invested = p.quantity * p.avgPrice;
+                            const plPercent = invested > 0 ? ((pl / invested) * 100).toFixed(2) : 0;
                             return `
                                 <div style="background:#1e293b; border-radius:8px; padding:12px; border-left:3px solid ${plColor};">
                                     <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:10px;">
@@ -5944,7 +6065,7 @@
                                         </div>
                                         <div>
                                             <div style="color:#94a3b8; font-size:0.75rem;">Ganancia/Pérdida</div>
-                                            <div style="color:${plColor}; font-weight:bold;">${plSign}${formatCurrency(pl)}</div>
+                                            <div style="color:${plColor}; font-weight:bold;">${plSign}${formatCurrency(pl)} <span style="font-size:0.9rem;">(${plSign}${plPercent}%)</span></div>
                                         </div>
                                     </div>
                                 </div>
@@ -8118,11 +8239,26 @@
                             </div>
 
                             <div class="company-tabs">
-                                <button class="tab-btn ${activeTab === 'summary' ? 'active' : ''}" data-tab="summary">Resumen</button>
-                                <button class="tab-btn ${activeTab === 'staff' ? 'active' : ''}" data-tab="staff">Personal</button>
-                                <button class="tab-btn ${activeTab === 'product' ? 'active' : ''}" data-tab="product">Producto</button>
-                                <button class="tab-btn ${activeTab === 'marketing' ? 'active' : ''}" data-tab="marketing">Marketing</button>
-                                <button class="tab-btn ${activeTab === 'finance' ? 'active' : ''}" data-tab="finance">Finanzas</button>
+                                <button class="tab-btn ${activeTab === 'summary' ? 'active' : ''}" data-tab="summary">
+                                    <span class="mobile-text">📊</span>
+                                    <span class="desktop-text">Resumen</span>
+                                </button>
+                                <button class="tab-btn ${activeTab === 'staff' ? 'active' : ''}" data-tab="staff">
+                                    <span class="mobile-text">👥</span>
+                                    <span class="desktop-text">Personal</span>
+                                </button>
+                                <button class="tab-btn ${activeTab === 'product' ? 'active' : ''}" data-tab="product">
+                                    <span class="mobile-text">📦</span>
+                                    <span class="desktop-text">Producto</span>
+                                </button>
+                                <button class="tab-btn ${activeTab === 'marketing' ? 'active' : ''}" data-tab="marketing">
+                                    <span class="mobile-text">📢</span>
+                                    <span class="desktop-text">Marketing</span>
+                                </button>
+                                <button class="tab-btn ${activeTab === 'finance' ? 'active' : ''}" data-tab="finance">
+                                    <span class="mobile-text">💰</span>
+                                    <span class="desktop-text">Finanzas</span>
+                                </button>
                             </div>
 
                             <div class="company-tab-content" id="co-tab-content">
@@ -8307,6 +8443,13 @@
                                 upgradeText += ` (${formatCurrency(upgradeCost)})`;
                             }
 
+                            // Check if Expert hiring should be locked (productLevel must be >= 5)
+                            const expertLocked = co.productLevel < 5;
+                            const expertBtnDisabled = expertLocked ? 'disabled' : '';
+                            const expertBtnStyle = expertLocked ? 'opacity:0.5; cursor:not-allowed;' : '';
+                            const expertBtnText = expertLocked ? `Experto (1.8k) 🔒 Req: Nv.5` : 'Experto (1.8k)';
+
+
                             co.staff.forEach((emp, i) => {
                                 staffHtml += `
                                 <div class="staff-row">
@@ -8315,7 +8458,27 @@
                                         <span style="font-size:0.8rem">Habilidad: ${(emp.skill * 100).toFixed(0)}% | Moral: ${(emp.morale * 100).toFixed(0)}%</span>
                                     </div>
                                     <div style="text-align:right">
-                                        <div>Salario: ${formatCurrency(emp.salary)} <span style="font-size:0.7rem; color:#94a3b8">(Req: ${formatCurrency(emp.requiredWage)})</span></div>
+                                        <div style="margin-bottom:5px;">
+                                            <label style="font-size:0.75rem; color:#94a3b8; display:block; margin-bottom:2px;">Salario</label>
+                                            <div style="display:flex; align-items:center; gap:5px; justify-content:flex-end;">
+                                                <input 
+                                                    type="number" 
+                                                    id="salary-input-${i}" 
+                                                    value="${emp.salary}" 
+                                                    min="1000" 
+                                                    max="9000" 
+                                                    step="100"
+                                                    style="width:80px; padding:4px 6px; background:#0f172a; border:1px solid #475569; color:white; border-radius:4px; font-size:0.85rem; text-align:right;"
+                                                    onchange="updateEmployeeSalary(${i})"
+                                                >
+                                                <button 
+                                                    onclick="updateEmployeeSalary(${i})" 
+                                                    style="background:var(--accent-color); color:#0f172a; border:none; border-radius:4px; padding:4px 8px; cursor:pointer; font-size:0.7rem; font-weight:600;"
+                                                    title="Actualizar salario"
+                                                >✓</button>
+                                            </div>
+                                        </div>
+                                        <div style="font-size:0.7rem; color:#94a3b8; margin-bottom:3px;">Req. Mín: ${formatCurrency(emp.requiredWage)}</div>
                                         <label style="font-size:0.7rem;"><input type="checkbox" ${emp.autoWage ? 'checked' : ''} onchange="toggleAutoWage(${i})"> Auto-subida</label>
                                     </div>
                                     <div style="text-align:right">
@@ -8324,6 +8487,7 @@
                                 </div>
                             `;
                             });
+
 
                             tabContent.innerHTML = `
                             <div class="staff-section">
@@ -8338,8 +8502,9 @@
                                     <h4>Contratar</h4>
                                     <div style="display:flex; gap:5px;">
                                         <button onclick="hireRole('Dependiente', 1200)" class="btn-hire">Dependiente (1.2k)</button>
-                                        <button onclick="hireRole('Experto', 1800)" class="btn-hire">Experto (1.8k)</button>
+                                        <button onclick="hireRole('Experto', 1800)" class="btn-hire" ${expertBtnDisabled} style="${expertBtnStyle}" title="${expertLocked ? 'Requiere Nivel de Producto 5 (Actual: ' + co.productLevel + ')' : ''}">${expertBtnText}</button>
                                     </div>
+                                    ${expertLocked ? '<p style="color:#fbbf24; font-size:0.75rem; margin-top:8px; text-align:center;">💡 Mejora el Nivel de Producto a 5 para desbloquear empleados Expertos (Actual: Nivel ' + co.productLevel + ')</p>' : ''}
                                 </div>
                             </div>
                         `;
@@ -8350,9 +8515,44 @@
                             };
 
                             window.hireRole = (role, sal) => {
+                                // Validate Expert hiring restriction
+                                if (role === 'Experto' && GameState.company.productLevel < 5) {
+                                    const lockMsg = `
+                                        <div style="text-align:center;">
+                                            <p style="margin-bottom:15px;">No puedes contratar <strong>Empleados Expertos</strong> aún.</p>
+                                            <div style="background:rgba(251, 191, 36, 0.1); border:1px solid #fbbf24; border-radius:8px; padding:15px; margin:15px 0;">
+                                                <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                                                    <span>Requisito:</span>
+                                                    <strong style="color:#fbbf24;">Nivel de Producto 5</strong>
+                                                </div>
+                                                <div style="display:flex; justify-content:space-between;">
+                                                    <span>Nivel Actual:</span>
+                                                    <strong style="color:#f87171;">Nivel ${GameState.company.productLevel}</strong>
+                                                </div>
+                                            </div>
+                                            <p style="color:#94a3b8; font-size:0.9rem; margin-top:15px;">
+                                                💡 Debes invertir más en <strong>Desarrollo de Producto (I+D)</strong>.
+                                            </p>
+                                            <p style="color:#94a3b8; font-size:0.9rem;">
+                                                Ve a la pestaña <strong style="color:#38bdf8;">"Producto"</strong> y realiza inversiones hasta alcanzar el Nivel 5.
+                                            </p>
+                                        </div>
+                                    `;
+                                    UI.showModal('🔒 Empleados Expertos Bloqueados', lockMsg, [
+                                        { text: 'Entendido', style: 'secondary', fn: null }
+                                    ]);
+                                    return;
+                                }
                                 const skill = role === 'Experto' ? 0.8 : 0.4;
                                 const r = CompanyModule.hireStaff(role, sal, skill);
-                                if (r) { if (!r.success) alert(r.message); UI.updateJob(JobSystem); }
+                                if (r) {
+                                    if (!r.success) {
+                                        UI.showModal('❌ Error al Contratar', r.message, [
+                                            { text: 'Cerrar', style: 'secondary', fn: null }
+                                        ]);
+                                    }
+                                    UI.updateJob(JobSystem);
+                                }
                             };
                             window.fireEmployee = (i) => {
                                 if (confirm('¿Despedir empleado? Baja moral del equipo.')) {
@@ -8362,6 +8562,130 @@
                             };
                             window.toggleAutoWage = (i) => {
                                 if (GameState.company.staff[i]) GameState.company.staff[i].autoWage = !GameState.company.staff[i].autoWage;
+                            }
+
+                            window.updateEmployeeSalary = (employeeIndex) => {
+                                const inputEl = document.getElementById(`salary-input-${employeeIndex}`);
+                                const newSalary = parseInt(inputEl.value);
+
+                                // Validation: Range check
+                                if (isNaN(newSalary) || newSalary < 1000 || newSalary > 9000) {
+                                    UI.showModal(
+                                        '⚠️ Salario Inválido',
+                                        'El salario debe estar entre <strong>1.000€</strong> y <strong>9.000€</strong>.',
+                                        [{
+                                            text: 'Entendido', style: 'secondary', fn: () => {
+                                                inputEl.value = GameState.company.staff[employeeIndex].salary;
+                                            }
+                                        }]
+                                    );
+                                    return;
+                                }
+
+                                const employee = GameState.company.staff[employeeIndex];
+                                const oldSalary = employee.salary;
+
+                                // Warning: Below required wage
+                                if (newSalary < employee.requiredWage) {
+                                    const warningMsg = `
+                                        <div style="text-align:left;">
+                                            <p style="margin-bottom:10px;">Estás estableciendo el salario por debajo del mínimo requerido:</p>
+                                            <div style="background:rgba(248, 113, 113, 0.1); border-left:3px solid #f87171; padding:10px; margin:10px 0; border-radius:4px;">
+                                                <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                                                    <span>Nuevo salario:</span>
+                                                    <strong>${formatCurrency(newSalary)}</strong>
+                                                </div>
+                                                <div style="display:flex; justify-content:space-between;">
+                                                    <span>Mínimo requerido:</span>
+                                                    <strong style="color:#f87171;">${formatCurrency(employee.requiredWage)}</strong>
+                                                </div>
+                                            </div>
+                                            <p style="color:#fbbf24; margin-top:10px;">
+                                                ⚠️ Esto afectará <strong>negativamente la MORAL</strong> del empleado y reducirá su productividad.
+                                            </p>
+                                            <p style="margin-top:10px;">¿Continuar de todos modos?</p>
+                                        </div>
+                                    `;
+
+                                    UI.confirmModal('⚠️ Advertencia de Salario Bajo', warningMsg, () => {
+                                        // User confirmed - proceed with update
+                                        employee.salary = newSalary;
+
+                                        const diff = newSalary - oldSalary;
+                                        const diffText = diff >= 0 ? `+${formatCurrency(diff)}` : formatCurrency(diff);
+
+                                        UI.showModal(
+                                            '⚠️ Salario Reducido',
+                                            `<div style="text-align:center;">
+                                                <p>Salario actualizado a <strong style="color:#f87171;">${formatCurrency(newSalary)}</strong></p>
+                                                <p style="color:#94a3b8; font-size:0.9rem;">(${diffText})</p>
+                                                <p style="margin-top:15px; color:#fbbf24;">😠 Esto afectará la moral del empleado.</p>
+                                            </div>`,
+                                            [{
+                                                text: 'Entendido', style: 'secondary', fn: () => {
+                                                    UI.updateJob(JobSystem);
+                                                    UI.updateHeader();
+                                                }
+                                            }]
+                                        );
+                                    }, () => {
+                                        // User cancelled - restore old value
+                                        inputEl.value = oldSalary;
+                                    });
+                                    return;
+                                }
+
+                                // Update salary (if not below required wage)
+                                employee.salary = newSalary;
+
+                                // Feedback message
+                                const diff = newSalary - oldSalary;
+                                const diffText = diff >= 0 ? `+${formatCurrency(diff)}` : formatCurrency(diff);
+
+                                if (diff > 0) {
+                                    UI.showModal(
+                                        '✅ Salario Actualizado',
+                                        `<div style="text-align:center;">
+                                            <p>Nuevo salario: <strong style="color:#4ade80;">${formatCurrency(newSalary)}</strong></p>
+                                            <p style="color:#94a3b8; font-size:0.9rem;">(${diffText})</p>
+                                            <p style="margin-top:15px; color:#4ade80;">😊 El empleado estará más motivado.</p>
+                                        </div>`,
+                                        [{
+                                            text: 'Perfecto', style: 'success', fn: () => {
+                                                UI.updateJob(JobSystem);
+                                                UI.updateHeader();
+                                            }
+                                        }]
+                                    );
+                                } else if (diff < 0) {
+                                    UI.showModal(
+                                        '⚠️ Salario Reducido',
+                                        `<div style="text-align:center;">
+                                            <p>Nuevo salario: <strong style="color:#f87171;">${formatCurrency(newSalary)}</strong></p>
+                                            <p style="color:#94a3b8; font-size:0.9rem;">(${diffText})</p>
+                                            <p style="margin-top:15px; color:#fbbf24;">😠 Esto afectará la moral del empleado.</p>
+                                        </div>`,
+                                        [{
+                                            text: 'Entendido', style: 'secondary', fn: () => {
+                                                UI.updateJob(JobSystem);
+                                                UI.updateHeader();
+                                            }
+                                        }]
+                                    );
+                                } else {
+                                    UI.showModal(
+                                        'ℹ️ Salario Confirmado',
+                                        `<div style="text-align:center;">
+                                            <p>Salario confirmado: <strong>${formatCurrency(newSalary)}</strong></p>
+                                        </div>`,
+                                        [{
+                                            text: 'OK', style: 'primary', fn: () => {
+                                                UI.updateJob(JobSystem);
+                                                UI.updateHeader();
+                                            }
+                                        }]
+                                    );
+                                }
                             }
 
                         } else if (activeTab === 'product') {
@@ -8778,8 +9102,8 @@
                 GameState.year++;
                 GameState.age++; // Birthday!
 
-                // CHECK FOR YEAR 10 ENDGAME
-                if (GameState.year > 10) {
+                // CHECK FOR YEAR 50 ENDGAME
+                if (GameState.year > 50) {
                     setTimeout(() => showEndgameModal(), 500);
                     return; // Stop game progression
                 }

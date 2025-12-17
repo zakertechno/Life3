@@ -3912,6 +3912,16 @@
                         GameState.currentYearIncome = { salary: 0, rental: 0, stocks: 0, company: 0 };
                     }
                     GameState.currentYearIncome.stocks += profit;
+
+                    // LIFETIME TRACKING - DEFENSIVE INIT
+                    if (!GameState.lifetimeStats) {
+                        GameState.lifetimeStats = {
+                            totalIncome: { salary: 0, rental: 0, stocks: 0, company: 0 },
+                            totalExpenses: { lifestyle: 0, housing: 0, education: 0 },
+                            totalTaxesPaid: 0
+                        };
+                    }
+                    GameState.lifetimeStats.totalIncome.stocks += profit;
                 }
 
                 pItem.quantity -= qty;

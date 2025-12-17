@@ -2685,7 +2685,7 @@
             #bottom-nav {
                 display: grid;
                 grid-template-columns: repeat(6, 1fr);
-                position: fixed;
+                position: sticky;
                 top: 0;
                 left: 0;
                 width: 100%;
@@ -2726,7 +2726,7 @@
 
             /* View Container Padding for Top Nav */
             #view-container {
-                margin-top: 80px;
+                /* margin removed - sticky nav doesn't need it */
             }
 
             /* Layout Stacks */
